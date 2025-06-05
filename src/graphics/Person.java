@@ -67,7 +67,7 @@ public class Person {
     }
 
     public boolean isClicked(int mouseX, int mouseY) {
-        // calculates distance from mouse click at mouseX and mouseY to center
+        // calculates distance from mouse click to center
         // of image since (x,y) of image is positioned at the top left corner
         // we use x+(image.pixelWidth/2), y+(image.pixelHeight/2)) to get center
         int centerX = x + (image.pixelWidth / 2);

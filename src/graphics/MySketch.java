@@ -97,7 +97,7 @@ public class MySketch extends PApplet {
             }
         }
         
-        //////////////////////STAGE 2///////////////////////////////
+        //////////////////////STAGE 2//////////////////////////////
         if (stage == 2) {
             //load background
             image(stage2, 0, 0);

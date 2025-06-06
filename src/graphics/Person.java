@@ -9,6 +9,7 @@ package graphics;
  * @author 342628146
  */
 import processing.core.PApplet;
+import static processing.core.PApplet.constrain;
 import processing.core.PImage;
 
 public class Person {
@@ -85,6 +86,19 @@ public class Person {
         // display the name and age above the person's position
         app.text("Name: " + name, x, y - 50);
         app.text("Age: " + age, x, y - 30);
+    }
+    
+    public void moveConstraint(int stage) {
+        switch (stage) {
+            case 1:
+                x = constrain(x, 40, app.width - 80);
+                y = constrain(y, 80, app.height - 90);
+                break;
+            case 2:
+                x = constrain(x, 0, app.width - 16);
+                y = constrain(y, 320, app.height - 20);
+        }
+        
     }
     
     public void draw() {

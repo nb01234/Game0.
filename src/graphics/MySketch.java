@@ -14,7 +14,7 @@ public class MySketch extends PApplet {
     public boolean showInfo;
     int stage = 0;
     PImage stage1, stage2, stage3, stage4, stage5, stage6, stage7, stage8, stage9, stage10, stage11; // stage images
-    Wall wall, wall2, wall3, wall4, wall5;
+    Wall box;
     
     // movement variables
     boolean upPressed = false;
@@ -75,9 +75,6 @@ public class MySketch extends PApplet {
                 dy += 2;
             }
 
-            // Then apply dx, dy to position outside this block
-
-
             char1.move(dx, dy);
             char1.draw();
         }
@@ -85,20 +82,31 @@ public class MySketch extends PApplet {
         //////////////////////STAGE 1///////////////////////////////
         if (stage == 1) {
             
+            // prevent moving outside map
+            char1.moveConstraint(1);
+            
             //load background
             image(stage1, 0, 0);
+            
+            // hitbox to move to next stage
+            box = new Wall(this, 200, 100, 10, 10);
+            box.draw();
             
             char1.draw();
             
             // change stage if user leaves the room
-            if (char1.y() < 20) {
+            if (char1.isCollidingWith(box)) {
                 stage = 2;
-                char1.moveTo(200, 320); // move char to bottom
+                char1.moveTo(200, 380); // move char to bottom
             }
         }
         
         //////////////////////STAGE 2//////////////////////////////
         if (stage == 2) {
+            
+            char1.moveConstraint(2);
+            
+            
             //load background
             image(stage2, 0, 0);
             

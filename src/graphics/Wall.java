@@ -8,26 +8,22 @@ package graphics;
  *
  * @author 342628146
  */
+
 import processing.core.PApplet;
 import processing.core.PImage;
 
-public class Person {
+public class Wall {
     private int x, y;
-    private String name;
-    private int age;
     private int width, height;
     private PApplet app;
     private PImage image;
     
-    public Person(PApplet p, int x, int y, String name, int age, String imagePath) {
+    public Wall(PApplet p, int x, int y, int width, int height) {
         this.app = p;
+        this.width = width;
+        this.height = height;
         this.x = x;
         this.y = y;
-        this.name = name;
-        this.age = age;
-        this.image = app.loadImage(imagePath);
-        this.width = image.width;
-        this.height = image.height;
     }
     
     public void move(int dx, int dy) {
@@ -40,10 +36,6 @@ public class Person {
         y=dy;
     }
     
-    public void setName(String name) {
-        this.name = name;
-    }
-    
     public int x() {
         return x;
     }
@@ -52,15 +44,12 @@ public class Person {
         return y;
     }
     
-     public boolean isCollidingWith(Wall other) {
-        // Check if the bounding boxes of the two persons intersect
-        boolean isLeftOfOtherRight = x < other.x() + other.width();
-        boolean isRightOfOtherLeft = x + width > other.x();
-        boolean isAboveOtherBottom = y < other.y() + other.height();
-        boolean isBelowOtherTop = y + height > other.y();
-
-        return isLeftOfOtherRight && isRightOfOtherLeft 
-               && isAboveOtherBottom && isBelowOtherTop;
+    public int width() {
+        return width;
+    }
+    
+    public int height() {
+        return height;
     }
 
     public boolean isClicked(int mouseX, int mouseY) {
@@ -79,15 +68,9 @@ public class Person {
         // we use 16px because the image is 32px by 32px
         return d < 16;
     }   
-
-    public void displayInfo(PApplet p) {
-        app.fill(0); // set the fill color to black
-        // display the name and age above the person's position
-        app.text("Name: " + name, x, y - 50);
-        app.text("Age: " + age, x, y - 30);
-    }
     
     public void draw() {
-        app.image(image, x, y);
+        app.fill(0);
+        app.rect(x, y, width, height);
     }
 }

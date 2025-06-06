@@ -10,11 +10,11 @@ import processing.core.PImage;
 public class MySketch extends PApplet {
     
     private Person char1;
-    private Person char2;
     String userInput = "";
     public boolean showInfo;
     int stage = 0;
-    PImage backgroundImage;
+    PImage stage1, stage2, stage3, stage4, stage5, stage6, stage7, stage8, stage9, stage10, stage11; // stage images
+    Wall wall, wall2, wall3, wall4, wall5;
     
     // movement variables
     boolean upPressed = false;
@@ -33,9 +33,20 @@ public class MySketch extends PApplet {
         background(2, 50, 5);
         textSize(20);
         char1 = new Person(this, 200, 200, "Mr. Lu", 99, "images/person.png");
-        char2 = new Person(this, 100, 200, "Mr. Loo", 77, "images/person.png");
         
-        backgroundImage = loadImage("images/stage1.png");
+        stage1 = loadImage("images/stage1.png");
+        stage2 = loadImage("images/stage2.png");
+//        stage3 = loadImage("images/stage3.png");
+//        stage4 = loadImage("images/stage4.png");
+//        stage5 = loadImage("images/stage5.png");
+//        stage6 = loadImage("images/stage6.png");
+//        stage7 = loadImage("images/stage7.png");
+//        stage8 = loadImage("images/stage8.png");
+//        stage9 = loadImage("images/stage9.png");
+//        stage10 = loadImage("images/stage10.png");
+//        stage11 = loadImage("images/stage11.png");
+        
+        
     }
     
     public void draw() {
@@ -44,26 +55,38 @@ public class MySketch extends PApplet {
         if (stage == 0) {
             //display entered text
             fill(0);
-            text("You are dead.", 20, 30);
             text("Enter your name:", 20, 50);
             text(userInput, 20, 100);
         } else {
-            // enable directional movement as long as stage isn't 0
+            // directional movement including wall physics
             int dx = 0;
             int dy = 0;
 
-            if (leftPressed) dx -= 2;
-            if (rightPressed) dx += 2;
-            if (upPressed) dy -= 2;
-            if (downPressed) dy += 2;
+            if (leftPressed) {
+                dx -= 2;
+            }
+            if (rightPressed) {
+                dx += 2;
+            }
+            if (upPressed) {
+                dy -= 2;
+            }
+            if (downPressed) {
+                dy += 2;
+            }
+
+            // Then apply dx, dy to position outside this block
+
 
             char1.move(dx, dy);
             char1.draw();
         }
         
+        //////////////////////STAGE 1///////////////////////////////
         if (stage == 1) {
+            
             //load background
-            image(backgroundImage, 0, 0);
+            image(stage1, 0, 0);
             
             char1.draw();
             
@@ -74,7 +97,18 @@ public class MySketch extends PApplet {
             }
         }
         
+        //////////////////////STAGE 2///////////////////////////////
         if (stage == 2) {
+            //load background
+            image(stage2, 0, 0);
+            
+            char1.draw();
+            
+            // change stage if user leaves the room
+            if (char1.y() < 20) {
+                stage = 3;
+                char1.moveTo(200, 320); // move char to bottom
+            }
         }
             
         if (showInfo) {
@@ -82,14 +116,11 @@ public class MySketch extends PApplet {
             char1.displayInfo(this);
         }
         
-        //display char2
-        char2.draw();
-        
-        // if characters are touching
-        if (char1.isCollidingWith(char2)) {
-            fill(255, 0, 0);
-            this.text("ouuch", char2.x(), char2.y());
-        }
+        // COLLISION (UNUSED)
+//        if (char1.isCollidingWith(char2)) {
+//            fill(255, 0, 0);
+//            this.text("ouuch", char2.x(), char2.y());
+//        }
     }
     
     public void mousePressed() {

@@ -9,7 +9,7 @@ import processing.core.PImage;
 
 public class MySketch extends PApplet {
     
-    private Person char1;
+    private Person char1, emperor;
     String userInput = "";
     public boolean showInfo;
     int stage = 0;
@@ -35,10 +35,11 @@ public class MySketch extends PApplet {
         background(2, 50, 5);
         textSize(20);
         char1 = new Person(this, 200, 200, "Mr. Lu", 99, "images/person.png");
+        emperor = new Person(this, 200, 200, "Emperor", 75, "images/person.png");
         
         stage1 = loadImage("images/stage1.png");
         stage2 = loadImage("images/stage2.png");
-//        stage3 = loadImage("images/stage3.png");
+        stage3 = loadImage("images/stage3.png");
 //        stage4 = loadImage("images/stage4.png");
 //        stage5 = loadImage("images/stage5.png");
 //        stage6 = loadImage("images/stage6.png");
@@ -108,15 +109,15 @@ public class MySketch extends PApplet {
         //////////////////////STAGE 2//////////////////////////////
         if (stage == 2) {
             
+            //load background
+            image(stage2, 0, 0);
+            
             // player boundaries
             char1.moveConstraint(2);
             
             // hitbox to move to next stage
             box = new Wall(this, 390, 330, 10, 10);
             box.draw();
-            
-            //load background
-            image(stage2, 0, 0);
             
             char1.draw();
             
@@ -130,6 +131,44 @@ public class MySketch extends PApplet {
             }
             if (char1.y() == 320 && dialogBox == 1) {
                 image(box2, 0, 0);
+                
+                // change stage if user leaves the room
+                if (char1.isCollidingWith(box)) {
+                    stage = 3;
+                    char1.moveTo(200, 300); // move char to bottom
+                }
+            }
+            
+        }
+        
+        //////////////////////STAGE 3//////////////////////////////
+        if (stage == 3) {
+            
+            // player boundaries
+            char1.moveConstraint(3);
+            
+            // hitbox to move to next stage
+            box = new Wall(this, 200, 380, 10, 10);
+            box.draw();
+            
+            //load background
+            image(stage3, 0, 0);
+            
+            // draw characters
+            char1.draw();
+            emperor.draw();
+            
+            // activate dialog
+            if (char1.isCollidingWith(emperor) && dialogBox == 0) {
+                image(box1, 0, 0);
+                // next dialog box
+                if (mousePressed) {
+                    dialogBox = 1;
+                }
+            }
+            
+            if (char1.isCollidingWith(emperor) && dialogBox == 1) {
+                image(box2, 0, 0);
             }
             
             // change stage if user leaves the room
@@ -139,7 +178,8 @@ public class MySketch extends PApplet {
             }
             
         }
-
+        
+        
         if (showInfo) {
             // display the person's info if the showInfo flag is true
             char1.displayInfo(this);

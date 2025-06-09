@@ -14,7 +14,9 @@ public class MySketch extends PApplet {
     public boolean showInfo;
     int stage = 0;
     PImage stage1, stage2, stage3, stage4, stage5, stage6, stage7, stage8, stage9, stage10, stage11; // stage images
+    PImage box1, box2, box3, box4, box5, box6, box7; //dialog box images
     Wall box;
+    int dialogBox = 0;
     
     // movement variables
     boolean upPressed = false;
@@ -46,6 +48,8 @@ public class MySketch extends PApplet {
 //        stage10 = loadImage("images/stage10.png");
 //        stage11 = loadImage("images/stage11.png");
         
+        box1 = loadImage("images/box1.png");
+        box2 = loadImage("images/box2.png");
         
     }
     
@@ -82,7 +86,7 @@ public class MySketch extends PApplet {
         //////////////////////STAGE 1///////////////////////////////
         if (stage == 1) {
             
-            // prevent moving outside map
+            // player boundaries
             char1.moveConstraint(1);
             
             //load background
@@ -104,21 +108,38 @@ public class MySketch extends PApplet {
         //////////////////////STAGE 2//////////////////////////////
         if (stage == 2) {
             
+            // player boundaries
             char1.moveConstraint(2);
             
+            // hitbox to move to next stage
+            box = new Wall(this, 390, 330, 10, 10);
+            box.draw();
             
             //load background
             image(stage2, 0, 0);
             
             char1.draw();
             
-            // change stage if user leaves the room
-            if (char1.y() < 20) {
-                stage = 3;
-                char1.moveTo(200, 320); // move char to bottom
+            // activate dialog
+            if (char1.y() == 320 && dialogBox == 0) {
+                image(box1, 0, 0);
+                // next dialog box
+                if (mousePressed) {
+                    dialogBox = 1;
+                }
             }
-        }
+            if (char1.y() == 320 && dialogBox == 1) {
+                image(box2, 0, 0);
+            }
             
+            // change stage if user leaves the room
+            if (char1.isCollidingWith(box)) {
+                stage = 3;
+                char1.moveTo(200, 380); // move char to bottom
+            }
+            
+        }
+
         if (showInfo) {
             // display the person's info if the showInfo flag is true
             char1.displayInfo(this);

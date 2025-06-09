@@ -31,6 +31,16 @@ public class Person {
         this.height = image.height;
     }
     
+    public Person(PApplet p, int x, int y, String name, String imagePath) {
+        this.app = p;
+        this.x = x;
+        this.y = y;
+        this.name = name;
+        this.image = app.loadImage(imagePath);
+        this.width = image.width;
+        this.height = image.height;
+    }
+    
     public void move(int dx, int dy) {
         y += dy;
         x += dx;
@@ -53,15 +63,26 @@ public class Person {
         return y;
     }
     
-     public boolean isCollidingWith(Wall other) {
-        // Check if the bounding boxes of the two persons intersect
-        boolean isLeftOfOtherRight = x < other.x() + other.width();
-        boolean isRightOfOtherLeft = x + width > other.x();
-        boolean isAboveOtherBottom = y < other.y() + other.height();
-        boolean isBelowOtherTop = y + height > other.y();
+    public boolean isCollidingWith(Person other) {
+       // Check if the bounding boxes of the two persons intersect
+       boolean isLeftOfOtherRight = x < other.x() + other.width;
+       boolean isRightOfOtherLeft = x + width > other.x;
+       boolean isAboveOtherBottom = y < other.y() + other.height;
+       boolean isBelowOtherTop = y + height > other.y;
 
-        return isLeftOfOtherRight && isRightOfOtherLeft 
-               && isAboveOtherBottom && isBelowOtherTop;
+       return isLeftOfOtherRight && isRightOfOtherLeft 
+              && isAboveOtherBottom && isBelowOtherTop;
+    }
+    
+    public boolean isCollidingWith(Wall other) {
+       // Check if the bounding boxes of the two persons intersect
+       boolean isLeftOfOtherRight = x < other.x() + other.width();
+       boolean isRightOfOtherLeft = x + width > other.x();
+       boolean isAboveOtherBottom = y < other.y() + other.height();
+       boolean isBelowOtherTop = y + height > other.y();
+
+       return isLeftOfOtherRight && isRightOfOtherLeft 
+              && isAboveOtherBottom && isBelowOtherTop;
     }
 
     public boolean isClicked(int mouseX, int mouseY) {
@@ -75,6 +96,10 @@ public class Person {
         // gives us the dimensions of the image 32px by 32px
         System.out.println("image height=" + image.pixelHeight);
         System.out.println("image width=" + image.pixelWidth);
+        
+        // give x and y value
+        System.out.println(x);
+        System.out.println(y);
 
         // returns true if mouse clicked is within 16px from the center of image
         // we use 16px because the image is 32px by 32px

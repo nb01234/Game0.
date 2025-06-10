@@ -13,10 +13,11 @@ public class MySketch extends PApplet {
     String userInput = "";
     public boolean showInfo;
     int stage = 0;
-    PImage stage1, stage2, stage3, stage4, stage5, stage6, stage7, stage8, stage9, stage10, stage11; // stage images
+    PImage stage1, stage2, stage3, stage4, stage5, stage6, stage7; // stage images
     PImage box1, box2, box3, box4, box5, box6, box7; //dialog box images
     Wall box;
     int dialogBox = 0;
+    boolean mouseHandled = false;
     
     // movement variables
     boolean upPressed = false;
@@ -35,7 +36,7 @@ public class MySketch extends PApplet {
         background(2, 50, 5);
         textSize(20);
         char1 = new Person(this, 200, 200, "Mr. Lu", 99, "images/person.png");
-        emperor = new Person(this, 200, 200, "Emperor", 75, "images/person.png");
+        emperor = new Person(this, 200, 200, "Emperor", 75, "images/emperor.png");
         
         stage1 = loadImage("images/stage1.png");
         stage2 = loadImage("images/stage2.png");
@@ -51,6 +52,8 @@ public class MySketch extends PApplet {
         
         box1 = loadImage("images/box1.png");
         box2 = loadImage("images/box2.png");
+        box3 = loadImage("images/box3.png");
+        box4 = loadImage("images/box4.png");
         
     }
     
@@ -151,24 +154,39 @@ public class MySketch extends PApplet {
             box = new Wall(this, 200, 380, 10, 10);
             box.draw();
             
-            //load background
+            // load background
             image(stage3, 0, 0);
             
-            // draw characters
-            char1.draw();
-            emperor.draw();
-            
-            // activate dialog
-            if (char1.isCollidingWith(emperor) && dialogBox == 0) {
-                image(box1, 0, 0);
-                // next dialog box
-                if (mousePressed) {
-                    dialogBox = 1;
-                }
+            // when player is in front of emperor
+            if (char1.y() >= emperor.y()) {
+                emperor.draw();
+                char1.draw();
             }
             
-            if (char1.isCollidingWith(emperor) && dialogBox == 1) {
-                image(box2, 0, 0);
+            // when player is behind emperor
+            if (char1.y() < emperor.y()) {
+                char1.draw();
+                emperor.draw();
+            }
+            
+            // activate dialog
+            if (char1.isCollidingWith(emperor)) {
+                if (dialogBox == 1) {
+                    image(box3, 0, 0);
+                } else if (dialogBox == 2) {
+                    image(box4, 0, 0);
+                } else if (dialogBox == 3) {
+                    // Continue with dialog or game
+                }
+
+                if (mousePressed && !mouseHandled) {
+                    dialogBox++;
+                    mouseHandled = true;
+                }
+
+                if (!mousePressed) {
+                    mouseHandled = false;
+                }
             }
             
             // change stage if user leaves the room
@@ -176,7 +194,6 @@ public class MySketch extends PApplet {
                 stage = 3;
                 char1.moveTo(200, 380); // move char to bottom
             }
-            
         }
         
         

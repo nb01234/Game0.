@@ -14,7 +14,7 @@ public class MySketch extends PApplet {
     public boolean showInfo;
     int stage = 0;
     PImage stage1, stage2, stage3, stage4, stage5, stage6, stage7; // stage images
-    PImage box1, box2, box3, box4, box5, box6, box7; //dialog box images
+    PImage box1, box2, box3, box4, box4b, box5, box6, box7, box8, box9, box10, box11, box11b, box11c, box11d, box12, box13; //dialog box images
     Wall box;
     int dialogBox = 0;
     boolean mouseHandled = false;
@@ -41,7 +41,7 @@ public class MySketch extends PApplet {
         stage1 = loadImage("images/stage1.png");
         stage2 = loadImage("images/stage2.png");
         stage3 = loadImage("images/stage3.png");
-//        stage4 = loadImage("images/stage4.png");
+        stage4 = loadImage("images/stage4.png");
 //        stage5 = loadImage("images/stage5.png");
 //        stage6 = loadImage("images/stage6.png");
 //        stage7 = loadImage("images/stage7.png");
@@ -54,6 +54,19 @@ public class MySketch extends PApplet {
         box2 = loadImage("images/box2.png");
         box3 = loadImage("images/box3.png");
         box4 = loadImage("images/box4.png");
+        box4b = loadImage("images/box4.1.png");
+        box5 = loadImage("images/box5.png");
+        box6 = loadImage("images/box6.png");
+        box7 = loadImage("images/box7.png");
+        box8 = loadImage("images/box8.png");
+        box9 = loadImage("images/box9.png");
+        box10 = loadImage("images/box10.png");
+        box11 = loadImage("images/box11.png");
+        box11b = loadImage("images/box11.1.png");
+        box11c = loadImage("images/box11.2.png");
+        box11d = loadImage("images/box11.3.png");
+        box12 = loadImage("images/box12.png");
+        box13 = loadImage("images/box13.png");
         
     }
     
@@ -124,25 +137,37 @@ public class MySketch extends PApplet {
             
             char1.draw();
             
-            // activate dialog
-            if (char1.y() == 320 && dialogBox == 0) {
-                image(box1, 0, 0);
-                // next dialog box
-                if (mousePressed) {
-                    dialogBox = 1;
+            // activate dialog based on dialogBox int
+            if (char1.y() == 320) {
+                switch (dialogBox) {
+                    case 0:
+                        image(box1, 0, 0);
+                        break;
+                    case 1:
+                        image(box2, 0, 0);
+                        break;
                 }
-            }
-            if (char1.y() == 320 && dialogBox == 1) {
-                image(box2, 0, 0);
                 
-                // change stage if user leaves the room
-                if (char1.isCollidingWith(box)) {
-                    stage = 3;
-                    char1.moveTo(200, 300); // move char to bottom
+                // code to update dialogBox
+                // doesn't let it update if dialog has finished
+                // mouseHandled ensures clicks don't carry over to next dialog box
+                if (mousePressed && !mouseHandled && dialogBox < 2) {
+                    dialogBox++;
+                    mouseHandled = true;
                 }
+                if (!mousePressed) {
+                    mouseHandled = false;
+                }
+                
+            } // end if
+            
+            // go to next level
+            if (char1.isCollidingWith(box)) {
+                stage = 3;
+                char1.moveTo(200, 300); // move char to bottom
             }
             
-        }
+        } // end if
         
         //////////////////////STAGE 3//////////////////////////////
         if (stage == 3) {
@@ -150,12 +175,12 @@ public class MySketch extends PApplet {
             // player boundaries
             char1.moveConstraint(3);
             
-            // hitbox to move to next stage
-            box = new Wall(this, 200, 380, 10, 10);
-            box.draw();
-            
             // load background
             image(stage3, 0, 0);
+            
+            // hitbox to move to next stage
+            box = new Wall(this, 380, 380, 10, 10);
+            box.draw();
             
             // when player is in front of emperor
             if (char1.y() >= emperor.y()) {
@@ -171,31 +196,111 @@ public class MySketch extends PApplet {
             
             // activate dialog
             if (char1.isCollidingWith(emperor)) {
-                if (dialogBox == 1) {
-                    image(box3, 0, 0);
-                } else if (dialogBox == 2) {
-                    image(box4, 0, 0);
-                } else if (dialogBox == 3) {
-                    // Continue with dialog or game
-                }
+                switch (dialogBox) {
+                    case 2:
+                        image(box3, 0, 0);
+                        break;
+                    case 3:
+                        image(box4, 0, 0);
+                        break;
+                    case 4:
+                        image(box4b, 0, 0);
+                        break;
+                    case 5:
+                        image(box5, 0, 0);
+                        break;
+                    case 6:
+                        image(box6, 0, 0);
+                        break;
+                    case 7:
+                        image(box7, 0, 0);
+                        break;
+                    case 8:
+                        image(box8, 0, 0);
+                        break;
+                    case 9:
+                        image(box9, 0, 0);
+                        break;
+                    case 10:
+                        image(box10, 0, 0);
+                        break;
+                    case 11:
+                        image(box11, 0, 0);
+                        break;
 
-                if (mousePressed && !mouseHandled) {
+                }
+                
+                // code to update dialogBox
+                // doesn't let it update if dialog has finished
+                // mouseHandled ensures clicks don't carry over to next dialog box
+                if (mousePressed && !mouseHandled && dialogBox < 12) {
                     dialogBox++;
                     mouseHandled = true;
                 }
-
                 if (!mousePressed) {
                     mouseHandled = false;
                 }
-            }
+            } // close if
+            
+            // change stage if user leaves the room
+            if (char1.isCollidingWith(box)) {
+                stage = 4;
+                char1.moveTo(200, 380); // move char to bottom
+            } // end if
+        }
+        
+        //////////////////////STAGE 4//////////////////////////////
+        if (stage == 4) {
+            // player boundaries
+            char1.moveConstraint(3);
+            
+            // load background
+            image(stage4, 0, 0);
+            
+            // hitbox to move to next stage
+            box = new Wall(this, 380, 380, 10, 10);
+            box.draw();
+
+                char1.draw();
+            
+            // activate dialog
+            if (char1.isCollidingWith(emperor)) {
+                switch (dialogBox) {
+                    case 12:
+                        image(box11b, 0, 0);
+                        break;
+                    case 13:
+                        image(box11c, 0, 0);
+                        break;
+                    case 14:
+                        image(box11d, 0, 0);
+                        break;
+                    case 15:
+                        image(box12, 0, 0);
+                        break;
+                    case 16:
+                        image(box13, 0, 0);
+                        break;
+                } //end switch
+                
+                // code to update dialogBox
+                // doesn't let it update if dialog has finished
+                // mouseHandled ensures clicks don't carry over to next dialog box
+                if (mousePressed && !mouseHandled && dialogBox < 12) {
+                    dialogBox++;
+                    mouseHandled = true;
+                }
+                if (!mousePressed) {
+                    mouseHandled = false;
+                }
+            } // close if
             
             // change stage if user leaves the room
             if (char1.isCollidingWith(box)) {
                 stage = 3;
                 char1.moveTo(200, 380); // move char to bottom
-            }
-        }
-        
+            } // end if
+        } // end if
         
         if (showInfo) {
             // display the person's info if the showInfo flag is true

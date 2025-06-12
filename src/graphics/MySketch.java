@@ -20,6 +20,7 @@ public class MySketch extends PApplet {
     Wall box;
     int dialogBox = 0;
     boolean mouseHandled = false;
+    int numArrows = 20;
     
     // movement variables
     boolean upPressed = false;
@@ -76,16 +77,16 @@ public class MySketch extends PApplet {
         box21 = loadImage("images/box21.png");
         box22 = loadImage("images/box21.png");
         
-        sun1 = new Sun(this, 40, 40, "images/sun.png");
-        sun2 = new Sun(this, 40, 90, "images/sun.png");
-        sun3 = new Sun(this, 40, 150, "images/sun.png");
-        sun4 = new Sun(this, 40, 200, "images/sun.png");
-        sun5 = new Sun(this, 40, 250, "images/sun.png");
-        sun6 = new Sun(this, 40, 300, "images/sun.png");
-        sun7 = new Sun(this, 40, 350, "images/sun.png");
-        sun8 = new Sun(this, 40, 400, "images/sun.png");
-        sun9 = new Sun(this, 40, 450, "images/sun.png");
-        sun10 = new Sun(this, 40, 500, "images/sun.png");
+        sun1 = new Sun(this, 40, 30, "images/sun.png");
+        sun2 = new Sun(this, 40, 100, "images/sun.png");
+        sun3 = new Sun(this, 40, 170, "images/sun.png");
+        sun4 = new Sun(this, 40, 30, "images/sun.png");
+        sun5 = new Sun(this, 40, 100, "images/sun.png");
+        sun6 = new Sun(this, 40, 170, "images/sun.png");
+        sun7 = new Sun(this, 40, 30, "images/sun.png");
+        sun8 = new Sun(this, 40, 100, "images/sun.png");
+        sun9 = new Sun(this, 40, 170, "images/sun.png");
+        sun10 = new Sun(this, 40, 30, "images/sun.png");
     }
     
     public void draw() {
@@ -340,7 +341,13 @@ public class MySketch extends PApplet {
             sun2.draw();
             sun3.draw();
             
+            // move char
             char1.draw();
+            
+            // move suns
+            sun1.move(4, 0);
+            sun2.move(3, 0);
+            sun3.move(2, 0);
                 
             // code to update dialogBox
             // doesn't let it update if dialog has finished

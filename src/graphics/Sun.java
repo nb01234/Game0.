@@ -17,6 +17,8 @@ public class Sun {
     private int width, height;
     private PApplet app;
     private PImage image;
+    private int speed;
+    private int direction;
     
     public Sun(PApplet p, int x, int y, String imagePath) {
         this.app = p;
@@ -25,12 +27,28 @@ public class Sun {
         this.image = app.loadImage(imagePath);
         this.width = image.width;
         this.height = image.height;
+        this.speed = 3;
+        this.direction = 1;
+    }
+    
+    public Sun(PApplet p, int x, int y, String imagePath, int speed, int direction) {
+        this.app = p;
+        this.x = x;
+        this.y = y;
+        this.image = app.loadImage(imagePath);
+        this.width = image.width;
+        this.height = image.height;
+        this.speed = speed;
+        this.direction = direction;
     }
     
     public void move(int dx, int dy) {
-        y += dy;
-        x += dx;
-    }
+            x += dx * direction;
+            y += dy * direction;
+            // flip direction if sun hits the wall
+            if (x > app.width - width || x < 0) 
+                direction *= -1;
+    }       
     
     public void moveTo(int dx, int dy) {
         x=dx;

@@ -127,6 +127,10 @@ public class Person {
                 x = constrain(x, 20, app.width - 10);
                 y = constrain(y, 20, app.height-20);
                 break;
+            case 4:
+                x = constrain(x, 20, app.width - 20);
+                y = constrain(y, 270, app.height - 100);
+                break;
         }
         
     }

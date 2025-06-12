@@ -14,20 +14,9 @@ import processing.core.PImage;
 
 public class Sun {
     private int x, y;
-    private int age;
     private int width, height;
     private PApplet app;
     private PImage image;
-    
-    public Sun(PApplet p, int x, int y, int age, String imagePath) {
-        this.app = p;
-        this.x = x;
-        this.y = y;
-        this.age = age;
-        this.image = app.loadImage(imagePath);
-        this.width = image.width;
-        this.height = image.height;
-    }
     
     public Sun(PApplet p, int x, int y, String imagePath) {
         this.app = p;
@@ -64,12 +53,12 @@ public class Sun {
         return height;
     }
     
-    public boolean isCollidingWith(Sun other) {
+    public boolean isCollidingWith(Arrow other) {
        // Check if the bounding boxes of the two persons intersect
-       boolean isLeftOfOtherRight = x < other.x() + other.width;
-       boolean isRightOfOtherLeft = x + width > other.x;
-       boolean isAboveOtherBottom = y < other.y() + other.height;
-       boolean isBelowOtherTop = y + height > other.y;
+       boolean isLeftOfOtherRight = x < other.x() + other.width();
+       boolean isRightOfOtherLeft = x + width > other.x();
+       boolean isAboveOtherBottom = y < other.y() + other.height();
+       boolean isBelowOtherTop = y + height > other.y();
 
        return isLeftOfOtherRight && isRightOfOtherLeft 
               && isAboveOtherBottom && isBelowOtherTop;
@@ -77,20 +66,11 @@ public class Sun {
     
     public void moveConstraint(int stage) {
         switch (stage) {
-            case 1:
-                x = constrain(x, 40, app.width - 80);
-                y = constrain(y, 80, app.height - 90);
-                break;
-            case 2:
-                x = constrain(x, 0, app.width - 16);
-                y = constrain(y, 320, app.height - 20);
-                break;
-            case 3:
+            case 5:
                 x = constrain(x, 20, app.width - 10);
-                y = constrain(y, 20, app.height-20);
+                y = constrain(y, 20, app.height - 20);
                 break;
         }
-        
     }
     
     public void draw() {

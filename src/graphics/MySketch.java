@@ -9,25 +9,32 @@ import processing.core.PImage;
 
 public class MySketch extends PApplet {
     
+    // declare objects
+    private Sun sun1, sun2, sun3, sun4, sun5, sun6, sun7, sun8, sun9, sun10;
+    private Wall box;
     private Person char1, emperor;
-    String userInput = "";
-    public boolean showInfo;
-    int stage = 0;
+    private Arrow arrow;
+    
+    // images for bgs, arrows, dialog boxes and suns
     PImage stage1, stage2, stage3, stage4, stage5, stage6, stage7; // stage images
     PImage box1, box2, box3, box4, box4b, box5, box6, box7, box8, box9, box10, box11, box11b, box11c, box11d, box12, box13,
            box14, box15, box16, box17, box18, box19, box20, box21, box22, box23, box24, box25, box26; //dialog box images
-    private Sun sun1, sun2, sun3, sun4, sun5, sun6, sun7, sun8, sun9, sun10;
-    Wall box;
-    int dialogBox = 0;
+    
+    // misc variables
+    int dialogBox = 0; // the # of dialog box
     boolean mouseHandled = false;
-    int numArrows = 20;
+    String userInput = "";
+    public boolean showInfo; // to show the character's info
+    int stage = 0;
+    int arrowCount = 20;
+    boolean arrowFired = false;
+    int numSuns = 9; // number of suns that must be shot
     
     // movement variables
     boolean upPressed = false;
     boolean downPressed = false;
     boolean leftPressed = false;
     boolean rightPressed = false;
-
     
     public void settings(){
 	//sets the size of the window
@@ -41,6 +48,7 @@ public class MySketch extends PApplet {
         char1 = new Person(this, 200, 200, "Mr. Lu", 99, "images/person.png");
         emperor = new Person(this, 200, 200, "Emperor", 75, "images/emperor.png");
         
+        // set stage images
         stage1 = loadImage("images/stage1.png");
         stage2 = loadImage("images/stage2.png");
         stage3 = loadImage("images/stage3.png");
@@ -53,6 +61,7 @@ public class MySketch extends PApplet {
 //        stage10 = loadImage("images/stage10.png");
 //        stage11 = loadImage("images/stage11.png");
         
+        // set dialog box images
         box1 = loadImage("images/box1.png");
         box2 = loadImage("images/box2.png");
         box3 = loadImage("images/box3.png");
@@ -77,6 +86,7 @@ public class MySketch extends PApplet {
         box21 = loadImage("images/box21.png");
         box22 = loadImage("images/box21.png");
         
+        // set suns info
         sun1 = new Sun(this, 40, 30, "images/sun.png");
         sun2 = new Sun(this, 40, 100, "images/sun.png");
         sun3 = new Sun(this, 40, 170, "images/sun.png");
@@ -87,6 +97,9 @@ public class MySketch extends PApplet {
         sun8 = new Sun(this, 40, 100, "images/sun.png");
         sun9 = new Sun(this, 40, 170, "images/sun.png");
         sun10 = new Sun(this, 40, 30, "images/sun.png");
+        
+        // set arrow object
+        arrow = new Arrow(this, 0, 0, "images/arrow.png");
     }
     
     public void draw() {
@@ -170,6 +183,7 @@ public class MySketch extends PApplet {
                 // code to update dialogBox
                 // doesn't let it update if dialog has finished
                 // mouseHandled ensures clicks don't carry over to next dialog box
+                // written with assistance from ChatGPT
                 if (mousePressed && !mouseHandled && dialogBox < 2) {
                     dialogBox++;
                     mouseHandled = true;
@@ -253,6 +267,7 @@ public class MySketch extends PApplet {
                 // code to update dialogBox
                 // doesn't let it update if dialog has finished
                 // mouseHandled ensures clicks don't carry over to next dialog box
+                // written with assistance from ChatGPT
                 if (mousePressed && !mouseHandled && dialogBox < 12) {
                     dialogBox++;
                     mouseHandled = true;
@@ -312,6 +327,7 @@ public class MySketch extends PApplet {
                 // code to update dialogBox
                 // doesn't let it update if dialog has finished
                 // mouseHandled ensures clicks don't carry over to next dialog box
+                // written with assistance from ChatGPT
                 if (mousePressed && !mouseHandled && dialogBox < 20) {
                     dialogBox++;
                     mouseHandled = true;
@@ -330,6 +346,7 @@ public class MySketch extends PApplet {
         
         //////////////////////STAGE 5//////////////////////////////
         if (stage == 5) {
+            
             // player boundaries
             char1.moveConstraint(4);
             
@@ -347,36 +364,80 @@ public class MySketch extends PApplet {
             // move suns
             sun1.move(4, 0);
             sun2.move(3, 0);
-            sun3.move(2, 0);
-                
-            // code to update dialogBox
-            // doesn't let it update if dialog has finished
-            // mouseHandled ensures clicks don't carry over to next dialog box
-            if (mousePressed && !mouseHandled && dialogBox < 20) {
-                dialogBox++;
+            sun3.move(5, 0);
+            
+            // arrow fire (written with assistance from ChatGPT)
+            // fires another arrow only if last one is done flying and arrows are not used up
+            if (mousePressed && !mouseHandled && !arrowFired && arrowCount > 0) {
+                // Set arrow to char position
+                arrow.setX(char1.x() + 24);
+                arrow.setY(char1.y());
+                // set arrowFired to true (handled in following statement)
+                arrowFired = true;
+                arrowCount--;
                 mouseHandled = true;
             }
+
             if (!mousePressed) {
                 mouseHandled = false;
             }
+
+            // Move and draw arrow
+            if (arrowFired) {
+                arrow.move(0, -6);
+                arrow.draw();
+
+                // remove arrow when it reaches the top, and allow next arrow
+                if (arrow.y() < 16) {
+                    // allow next arrow to be fired
+                    arrowFired = false;
+                    // move arrow offscreen (to avoid killing topmost sun while hidden and stopped)
+                    arrow.moveTo(500, 500);
+                }
+                
+                // remove arrow when it collides with a sun, and allow next arrow
+                if (arrow.isCollidingWith(sun1) || arrow.isCollidingWith(sun2) || arrow.isCollidingWith(sun3)) {
+                    
+                    // if arrow collides with sun, move it offscreen
+                    if (arrow.isCollidingWith(sun1)) {
+                        sun1.moveTo(-500, 500);
+                        // decrease sun count
+                        numSuns--;
+                    }
+                    if (arrow.isCollidingWith(sun2)) {
+                        sun2.moveTo(-500, 500);
+                        // decrease sun count
+                        numSuns--;
+                    }
+                    if (arrow.isCollidingWith(sun3)) {
+                        sun3.moveTo(-500, 500);
+                        // decrease sun count
+                        numSuns--;
+                    }
+
+                    // move arrow offscreen (to avoid killing other suns while hidden and stopped)
+                    arrow.moveTo(500, 500);
+                    // allow next arrow
+                    arrowFired = false;
+                    
+                } // end if (collision)
+            } // end if (arrowFired)
             
             // change stage if user leaves the room
             if (char1.x() > 390) {
                 stage = 5;
                 char1.moveTo(200, 380); // move char to bottom
             } // end if
-        } // end if
+            
+        } // end if (stage)
+        
+        //////////// END OF STAGES
+        System.out.println(numSuns);
         
         if (showInfo) {
             // display the person's info if the showInfo flag is true
             char1.displayInfo(this);
         }
-        
-        // COLLISION (UNUSED)
-//        if (char1.isCollidingWith(char2)) {
-//            fill(255, 0, 0);
-//            this.text("ouuch", char2.x(), char2.y());
-//        }
     }
     
     public void mousePressed() {

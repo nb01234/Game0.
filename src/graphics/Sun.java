@@ -19,6 +19,7 @@ public class Sun {
     private PImage image;
     private int speed;
     private int direction;
+    private boolean show = true;
     
     public Sun(PApplet p, int x, int y, String imagePath) {
         this.app = p;
@@ -71,6 +72,10 @@ public class Sun {
         return height;
     }
     
+    public void hide() {
+        this.show = false;
+    }
+    
     public boolean isCollidingWith(Arrow other) {
        // Check if the bounding boxes of the two persons intersect
        boolean isLeftOfOtherRight = x < other.x() + other.width();
@@ -92,6 +97,8 @@ public class Sun {
     }
     
     public void draw() {
-        app.image(image, x, y);
+        if (show == true) {
+            app.image(image, x, y);
+        }
     }
 }

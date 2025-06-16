@@ -12,7 +12,10 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 /**
-* The main sketch that creates visual gameplay and handles game mechanics.
+* A shooting game set in an ancient Chinese legend.
+* @author 342628146
+* @since 2025-06-15
+* @version 1.0
 */
 
 public class MySketch extends PApplet {

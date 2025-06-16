@@ -12,12 +12,25 @@ package graphics;
 import processing.core.PApplet;
 import processing.core.PImage;
 
+/**
+* Creates a hitbox that lets the user advance levels.
+*/
+
 public class Wall {
     private int x, y;
     private int width, height;
     private PApplet app;
     private PImage image;
     
+    /**
+    * Constructs a wall object.
+    *
+    * @param p the PApplet to draw the box on
+    * @param x the arrow's initial x-coordinate
+    * @param y the arrow's initial y-coordinate
+    * @param width the width of the box
+    * @param height the height of the box
+    */
     public Wall(PApplet p, int x, int y, int width, int height) {
         this.app = p;
         this.width = width;
@@ -26,49 +39,67 @@ public class Wall {
         this.y = y;
     }
     
+    /**
+    * Moves the box in x and y directions.
+    *
+    * @param dx the amount to move in x direction
+    * @param dy the amount to move in y direction
+    */
     public void move(int dx, int dy) {
         y += dy;
         x += dx;
     }
     
+    /**
+    * Moves the wall to a specified coordinate.
+    *
+    * @param dx the new x-coordinate
+    * @param dy the new y-coordinate
+    */
     public void moveTo(int dx, int dy) {
         x=dx;
         y=dy;
     }
     
+    /**
+    * Gets the x-coordinate of the wall.
+    *
+    * @return the x-coordinate
+    */
     public int x() {
         return x;
     }
     
+    /**
+    * Gets the y-coordinate of the wall.
+    *
+    * @return the y-coordinate
+    */
     public int y() {
         return y;
     }
     
+    /**
+    * Gets the width of the wall.
+    *
+    * @return the width
+    */
     public int width() {
         return width;
     }
     
+    /**
+    * Gets the height of the wall.
+    *
+    * @return the height
+    */
     public int height() {
         return height;
     }
-
-    public boolean isClicked(int mouseX, int mouseY) {
-        // calculates distance from mouse click to center
-        // of image since (x,y) of image is positioned at the top left corner
-        // we use x+(image.pixelWidth/2), y+(image.pixelHeight/2)) to get center
-        int centerX = x + (image.pixelWidth / 2);
-        int centerY = y + (image.pixelHeight / 2);
-        float d = PApplet.dist(mouseX, mouseY, centerX, centerY);
-
-        // gives us the dimensions of the image 32px by 32px
-        System.out.println("image height=" + image.pixelHeight);
-        System.out.println("image width=" + image.pixelWidth);
-
-        // returns true if mouse clicked is within 16px from the center of image
-        // we use 16px because the image is 32px by 32px
-        return d < 16;
-    }   
     
+    /**
+    * Colors the wall black and draws it on the PApplet.
+    */
     public void draw() {
         app.fill(0);
         app.rect(x, y, width, height);
